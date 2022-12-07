@@ -40,7 +40,7 @@ Window {
 
                         Model {
                             id: cubeModel
-                            source: "data/mesh/test.mesh"
+                            source: "./data/mesh/test.mesh"
                             DefaultMaterial {
                                 id: cubeMaterial
                                 diffuseColor: "#4aee45"
