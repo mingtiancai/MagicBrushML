@@ -15,6 +15,8 @@ qt_add_qml_module(appMagicBrushML
     URI MagicBrushML
     VERSION 1.0
     QML_FILES main.qml 
+    RESOURCES
+                 data/mesh/test.mesh
 )
 
 set_target_properties(appMagicBrushML PROPERTIES
