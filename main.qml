@@ -1,12 +1,55 @@
 import QtQuick
+import QtQuick.Window
 import QtQuick3D
+import QtQuick.Controls
+import Qt.labs.platform
+import QtQuick.Layouts
+import QtQml
 import QtQuick3D.Helpers
 
-Window {
-    width: 640
-    height: 480
+ApplicationWindow {
+    width: 1024
+    height: 768
     visible: true
-    title: qsTr("MagicBrushML")
+    title: qsTr("MagicBrushML");
+
+    MenuBar{
+        Menu{
+            title: qsTr("&File")
+            MenuItem{
+                text: qsTr("&Open")
+            }
+
+            MenuItem{
+                text: qsTr("&Close")
+                onTriggered: close()
+            }
+        }
+
+        Menu{
+            title: qsTr("&Edit")
+        }
+
+        Menu{
+            title: qsTr("&View")
+        }
+
+        Menu{
+            title: qsTr("&Search")
+        }
+
+        Menu{
+            title: qsTr("&Run")
+        }
+
+        Menu{
+            title: qsTr("&Debug")
+        }
+
+        Menu{
+            title: qsTr("&Tools")
+        }
+    }
 
     View3D {
         id: view3D
@@ -25,52 +68,62 @@ Window {
             anchors.fill: parent
             property int cx: 0
                 property int cy: 0
-                    onWheel: {
-                        if (wheel.angleDelta.y>0)
-                            camera.z = camera.z+5
-                        else
-                            camera.z = camera.z-5
-                        }
+                    onWheel: function(wheel){
+                    if (wheel.angleDelta.y>0)
+                        camera.z = camera.z+5
+                    else
+                        camera.z = camera.z-5
                     }
-                    Node {
-                        id: node
-                        DirectionalLight {
-                            id: directionalLight
-                        }
-
-                        Model {
-                            id: cubeModel
-                            source: "./data/mesh/test.mesh"
-                            DefaultMaterial {
-                                id: cubeMaterial
-                                diffuseColor: "#4aee45"
-                            }
-                            materials: cubeMaterial
-                        }
-                    }
-
-                    Node{
-                        id:cameraNode
-
-                        PerspectiveCamera {
-                            id: camera
-                            z: 15
-                        }
-                    }
-                    DebugView {
-                        source: view3D
-                    }
-
-                    AxisHelper {
-                        scale: Qt.vector3d(0.01, 0.01, 0.01)
-                        enableAxisLines: true
-                        enableXYGrid: true
-                        enableXZGrid: false
-                        enableYZGrid: false
-                    }
-                    WasdController {
-                        controlledObject: cameraNode
-                    }
-
+                    onPressed:function(mouse) {
+                    cx = mouse.x
+                    cy = mouse.y
                 }
+
+                onPositionChanged: function(mouse){
+                var intervalX = mouse.x-cx
+                var intervalY = mouse.y-cy
+                cameraNode.eulerRotation.y = intervalX+cameraNode.eulerRotation.y
+                cameraNode.eulerRotation.x = cameraNode.eulerRotation.x-intervalY
+                cx = mouse.x
+                cy = mouse.y
+
             }
+        }
+        Node {
+            id: node
+            DirectionalLight {
+                id: directionalLight
+            }
+
+            Model {
+                id: cubeModel
+                source:"./data/mesh/test.mesh";
+                DefaultMaterial {
+                    id: cubeMaterial
+                    diffuseColor: "#b5bcd7"
+                }
+                materials: cubeMaterial
+            }
+        }
+
+        Node{
+            id:cameraNode
+
+            PerspectiveCamera {
+                id: camera
+                z: 15
+            }
+        }
+
+        DebugView {
+            source: view3D
+        }
+        AxisHelper {
+            scale: Qt.vector3d(0.01, 0.01, 0.01)
+            enableAxisLines: true
+            enableXYGrid: true
+            enableXZGrid: false
+            enableYZGrid: false
+        }
+    }
+}
