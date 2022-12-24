@@ -35,7 +35,11 @@ ApplicationWindow {
         }
 
         Menu{
-            title: qsTr("&Search")
+            title: qsTr("&Render")
+        }
+
+        Menu{
+            title: qsTr("&Window")
         }
 
         Menu{
@@ -43,11 +47,11 @@ ApplicationWindow {
         }
 
         Menu{
-            title: qsTr("&Debug")
+            title: qsTr("&Tools")
         }
 
         Menu{
-            title: qsTr("&Tools")
+            title: qsTr("&Help")
         }
     }
 
