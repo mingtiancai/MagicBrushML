@@ -13,11 +13,25 @@ ApplicationWindow {
     visible: true
     title: qsTr("MagicBrushML");
 
+    property int currentFileIndex: 0;
+    property int filesCount: 0;
+    property bool isLoad: false;
+    property string current3dFile: ""
+
     MenuBar{
         Menu{
             title: qsTr("&File")
             MenuItem{
                 text: qsTr("&Open")
+            }
+
+            Menu{
+                title: qsTr("&Import")
+
+                MenuItem{
+                    text: qsTr("&.mesh")
+                    onTriggered:fileDialog.open()
+                }
             }
 
             MenuItem{
@@ -52,6 +66,17 @@ ApplicationWindow {
 
         Menu{
             title: qsTr("&Help")
+        }
+    }
+
+    FileDialog {
+        id: fileDialog;
+        fileMode: FileDialog.OpenFiles;
+        nameFilters: ["3d mesh files (*.mesh)"]
+        onAccepted: {
+            current3dFile = fileDialog.files[currentFileIndex];
+            filesCount = fileDialog.files.length;
+            console.log("current file = " , current3dFile , " count = " , filesCount )
         }
     }
 
@@ -101,7 +126,7 @@ ApplicationWindow {
 
             Model {
                 id: cubeModel
-                source:"./data/mesh/test.mesh";
+                source:current3dFile
                 DefaultMaterial {
                     id: cubeMaterial
                     diffuseColor: "#b5bcd7"
